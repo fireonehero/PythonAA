@@ -65,6 +65,7 @@ while True:
                 summonPhrase = "on"
 
             if summonPhrase == "on":
+
                 #Date/Time
                 if words.__contains__("what is the date"):
                     speak(date.today().strftime("%B %d, %Y"))    
@@ -90,10 +91,21 @@ while True:
                     better_words = words.replace("search for", " ")
                     webbrowser.open(f"https://duckduckgo.com/?t=ffab&q=" + better_words)
 
+                elif words.__contains__("anime time"):
+                    webbrowser.open("https://9anime.to/home")
+
+                elif words.__contains__("open reddit"):
+                    webbrowser.open("https://www.reddit.com")
+
                 #Searching Wikipedia
                 elif words.__contains__("search wikipedia for"):
                     best_words = words.replace("search wikipedia for", " ")
                     speak(wikipedia.summary(best_words, sentences = 5))
+
+                #Description
+                elif words.__contains__("what do you do"):
+                    speak(f"""I am Zen, your custom made Artificial Assistant, I currently have 11 commands at my disposal.""")
+
 
                 #Killing the bot
                 elif words.__contains__("kill the bot"):
@@ -105,14 +117,5 @@ while True:
                     speak(responsephrase)
                     summonPhrase = "off"
 
-    
-
         except:
             print("Retrying it")
-            amount_failed += 1
-
-            f = open("amount_failed.txt","a+")
-
-            f.write(f"The code has failed {amount_failed} times at: " + datetime.now().strftime("%I:%M %p\n"))
-
-            f.close() 
