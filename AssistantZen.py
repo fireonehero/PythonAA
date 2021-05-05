@@ -8,6 +8,7 @@ from datetime import date, datetime
 import random
 import webbrowser
 import youtubesearchpython
+import wikipedia
 
 def speak(text):
     tts = gTTS(text = text, lang = "en")
@@ -43,7 +44,8 @@ responselist = [
     'As you wish',
     'Your wish is my command',
     'Yes sir',
-    'It shall be done'
+    'It shall be done',
+    'Sure thing'
 ]
 
 responsephrase = random.choice(responselist)
@@ -58,34 +60,52 @@ while True:
             words = r.recognize_google(audio).lower()
             print('You said : {}'. format(words))     
                 
-            if words.__contains__ ("nexus on"):
+            if words.__contains__ ("power on"):
                 speak("Yes")
                 summonPhrase = "on"
 
             if summonPhrase == "on":
+                #Date/Time
                 if words.__contains__("what is the date"):
                     speak(date.today().strftime("%B %d, %Y"))    
 
                 elif words.__contains__("what time is it"):
                     speak("The time is:" + datetime.now().strftime("%I:%M %p"))
 
+
+                #Joke
                 elif words.__contains__("tell me a joke"):
                     speak(tellingjoke)
 
+                #Opening Stuff
                 elif words.__contains__("play the song"):
                     speak(responsephrase)
                     words = 'yes ' + words
                     webbrowser.open(f'https://www.youtube.com/watch?v=' + youtubesearchpython.VideosSearch(words.split('play the song')[1], limit = 2).result()['result'][0]['id'])
 
+                elif words.__contains__("open youtube"):
+                    webbrowser.open("https://www.youtube.com")
+
+                elif words.__contains__("search for"):
+                    better_words = words.replace("search for", " ")
+                    webbrowser.open(f"https://duckduckgo.com/?t=ffab&q=" + better_words)
+
+                #Searching Wikipedia
+                elif words.__contains__("search wikipedia for"):
+                    best_words = words.replace("search wikipedia for", " ")
+                    speak(wikipedia.summary(best_words, sentences = 5))
+
+                #Killing the bot
                 elif words.__contains__("kill the bot"):
                     speak("Killing it now.")
                     os._exit(0)
-
-                elif words.__contains__("nexus off"):
+                
+                #Poweringoff the bot
+                elif words.__contains__("power off"):
                     speak(responsephrase)
                     summonPhrase = "off"
 
-
+    
 
         except:
             print("Retrying it")
